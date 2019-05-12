@@ -1,0 +1,45 @@
+version: "3.3"
+
+services:
+
+  mysql_db:
+    build : ./mysql_db
+    container_name: mysql_db_app
+    environment:
+      
+      # So you don't have to use root, but you can if you like
+      MYSQL_ROOT_PASSWORD: 'password'
+      MYSQL_ROOT_HOST: '%'
+    ports:
+      # <Port exposed> : < MySQL Port running inside container>
+      - '3333:3306'
+    expose:
+      # Opens port 3306 on the container
+      - '3333'
+      # Where our data will be persisted
+
+
+  flask:
+    build: ./flask
+    container_name: flask
+    command: gunicorn -w 4 --bind 0.0.0.0:8080 wsgi:app
+    expose:
+      - 80
+     
+    ports:
+      - "80:8080"
+    depends_on:
+      - mysql_db     
+  
+  nginx:
+    image: nginx
+    restart: always
+    build:
+      context: ./nginx/
+      dockerfile: Dockerfile
+    expose:
+      - 9000
+    ports:
+      - "9000:80"
+    depends_on:
+      - flask    
