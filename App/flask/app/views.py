@@ -28,10 +28,9 @@ port=config['MySQL']['port']
 import mysql.connector
 from sqlalchemy import create_engine
 #connector = 'mysql+mysqlconnector://'+str(user)+':'+str(password)+'@'+str(host)+':'+str(port)+'/'+str(db)
-connector = 'mysql+mysqlconnector://root:password@172.19.0.2:3306/insofe_customerdata'
 print(connector)
 engine = create_engine(connector, echo=False)
-#engine = create_engine('mysql+mysqlconnector://root:password@127.0.0.1:3333/insofe_customerdata', echo=False)
+
 
 #
 # Load the model
